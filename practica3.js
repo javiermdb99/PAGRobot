@@ -21,25 +21,14 @@ function init() {
     var axes = new THREE.AxesHelper(20);
     scene.add(axes);
 
-    // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry(50, 50);
-    var planeMaterial = new THREE.MeshBasicMaterial({
-        color: 0xAAAAAA
-    });
-    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-
-    // rotate and position the plane
-    plane.rotation.x = -0.5 * Math.PI;
-    //plane.position.set(0, 0, 0);
-
-    // add the plane to the scene
-    scene.add(plane);
-
     createRobot(scene);
 
     // position and point the camera to the center of the scene
     camera.position.set(0, 40, 30);
     camera.lookAt(scene.position);
+
+    const light = new THREE.AmbientLight( 0xffffff   );
+    scene.add(light);
 
     // add the output of the renderer to the html element
     document.getElementById("contenedor").appendChild(renderer.domElement);
@@ -78,45 +67,88 @@ function render() {
 }
 
 function createRobot(scene) {
-    var piernaDerGeometry = new THREE.BoxGeometry(1, 7, 1);
-    var piernaIzqGeometry = new THREE.BoxGeometry(1, 7, 1);
+    var piernaDerGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
+    var piernaIzqGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
     var cuerpoGeometry = new THREE.BoxGeometry(6, 6, 6);
-    var cabezaGeometry = new THREE.BoxGeometry(2, 2, 2);
+    var cuelloGeometry = new THREE.CylinderGeometry(0.75, 0.75, 2, 64, 64);
+    var cabezaGeometry = new THREE.SphereGeometry(2, 64, 32);
+    var ojoIzqGeometry = new THREE.SphereGeometry(.25, 64, 32);
+    var ojoDerGeometry = new THREE.SphereGeometry(.25, 64, 32);
     var brazoDerGeometry = new THREE.BoxGeometry(1, 4, 1);
     var brazoIzqGeometry = new THREE.BoxGeometry(1, 4, 1);
+    var antebrazoDerGeometry = new THREE.BoxGeometry(1, 1, 5);
+    var antebrazoIzqGeometry = new THREE.BoxGeometry(1, 1, 5);
+    var manoIzqGeometry = new THREE.SphereGeometry(0.75, 64, 32);
+    var manoDerGeometry = new THREE.SphereGeometry(0.75, 64, 32);
+
 
     // materiales, recuerda que tienen que ser diferentes!!
-    var piernaDerMat = new THREE.MeshBasicMaterial({
+    var piernaDerMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
     });
-    var piernaIzqMat = new THREE.MeshBasicMaterial({
+    var piernaIzqMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
     });
     var cuerpoMat = new THREE.MeshBasicMaterial({
         color: 0xFFF703
     });
-    var cabezaMat = new THREE.MeshBasicMaterial({
+    var cabezaMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
     });
-    var brazoDerMat = new THREE.MeshBasicMaterial({
+    var ojoIzqMat = new THREE.MeshToonMaterial({
+        color: 0x0000FF
+    });
+    var ojoDerMat = new THREE.MeshToonMaterial({
+        color: 0x0000FF
+    });
+    var cuelloMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
     });
-    var brazoIzqMat = new THREE.MeshBasicMaterial({
+    var brazoDerMat = new THREE.MeshToonMaterial({
+        color: 0xFF9E9E
+    });
+    var brazoIzqMat = new THREE.MeshToonMaterial({
+        color: 0xFF9E9E
+    });
+    var antebrazoDerMat = new THREE.MeshToonMaterial({
+        color: 0xFF9E9E
+    });
+    var antebrazoIzqMat = new THREE.MeshToonMaterial({
+        color: 0xFF9E9E
+    });
+    var manoIzqMat = new THREE.MeshToonMaterial({
+        color: 0xFF9E9E
+    });
+    var manoDerMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
     });
 
     var piernaDer = new THREE.Mesh(piernaDerGeometry, piernaDerMat)
-    piernaDer.position.set(10, 3.5, 0);
+    piernaDer.position.set(-1, 3.5, 0);
     var piernaIzq = new THREE.Mesh(piernaIzqGeometry, piernaIzqMat)
-    piernaIzq.position.set(12, 3.5, 0);
+    piernaIzq.position.set(1, 3.5, 0);
     var cuerpo = new THREE.Mesh(cuerpoGeometry, cuerpoMat);
-    cuerpo.position.set(11, 10, 0);
+    cuerpo.position.set(0, 10, 0);
     var cabeza = new THREE.Mesh(cabezaGeometry, cabezaMat);
-    cabeza.position.set(11, 14, 0);
+    cabeza.position.set(0, 16, 0);
+    var ojoIzq = new THREE.Mesh(ojoIzqGeometry, ojoIzqMat);
+    ojoIzq.position.set(-.5, 17, 2);
+    var ojoDer = new THREE.Mesh(ojoDerGeometry, ojoDerMat);
+    ojoDer.position.set(.5, 17, 2);
+    var cuello = new THREE.Mesh(cuelloGeometry, cuelloMat);
+    cuello.position.set(0, 14, 0);
     var brazoDer = new THREE.Mesh(brazoDerGeometry, brazoDerMat);
-    brazoDer.position.set(7.5, 10, 0);
+    brazoDer.position.set(-3.5, 10, 0);
     var brazoIzq = new THREE.Mesh(brazoIzqGeometry, brazoIzqMat);
-    brazoIzq.position.set(14.5, 10, 0);
+    brazoIzq.position.set(3.5, 10, 0);
+    var antebrazoDer = new THREE.Mesh(antebrazoDerGeometry, antebrazoDerMat);
+    antebrazoDer.position.set(-3.5, 8, 2);
+    var antebrazoIzq = new THREE.Mesh(antebrazoIzqGeometry, antebrazoIzqMat);
+    antebrazoIzq.position.set(3.5, 8, 2);
+    var manoIzq = new THREE.Mesh(manoIzqGeometry, manoIzqMat);
+    manoIzq.position.set(-3.5, 8, 5);
+    var manoDer = new THREE.Mesh(manoDerGeometry, manoDerMat);
+    manoDer.position.set(3.5, 8, 5);
 
     // CUANDO HAYA LUZ
     //piernaDer.castShadow = true;
@@ -126,6 +158,14 @@ function createRobot(scene) {
     scene.add(piernaIzq);
     scene.add(cuerpo);
     scene.add(cabeza);
+    scene.add(cuello);
     scene.add(brazoDer);
     scene.add(brazoIzq);
+    scene.add(antebrazoDer);
+    scene.add(antebrazoIzq);
+    scene.add(ojoIzq);
+    scene.add(ojoDer);
+    scene.add(manoIzq);
+    scene.add(manoDer);
+
 }
