@@ -4,6 +4,7 @@
 //Variables
 var scene, renderer, camera;
 var controls;
+var grupoCuerpo, grupoCabeza;
 
 function init() {
     // create a scene, that will hold all our elements such as objects, cameras and lights.
@@ -47,8 +48,6 @@ function init() {
     //controles
     createControls();
 
-    document.body.addEventListener('keydown', teclado, false);
-
     // render the scene
     renderer.render(scene, camera);
 }
@@ -69,21 +68,45 @@ function teclado(e) {
 
     switch (e.key) {
         case 'ArrowUp':
-            mesh.rotateX(-0.1);
+            moverRobot(-0.1, "z")
             break;
         case 'ArrowDown':
-            mesh.rotateX(0.1);
+            moverRobot(0.1, "z")
             break;
         case 'ArrowLeft':
-            mesh.rotateY(-0.1);
+            moverRobot(-0.1, "x")
             break;
         case 'ArrowRight':
-            mesh.rotateY(0.1);
+            moverRobot(0.1, "x");
+            break;
+        case "a":
+            grupoCabeza.rotateY(-0.1);
+            break;
+        case "d":
+            grupoCabeza.rotateY(0.1);
             break;
     }
     e.preventDefault();
     render();
 
+}
+
+function moverCabeza(distancia, coord) {
+    if (coord == "x") {
+        grupoCabeza.rotateY(distancia);
+    } else {
+        grupoCabeza.rotateX(distancia);
+    }
+}
+
+function moverRobot(distancia, coord) {
+    if (coord == "x") {
+        grupoCabeza.position.x += distancia;
+        grupoCuerpo.position.x += distancia;
+    } else {
+        grupoCabeza.position.z += distancia;
+        grupoCuerpo.position.z += distancia;
+    }
 }
 
 function animate() {
@@ -100,6 +123,9 @@ function render() {
 }
 
 function createRobot(scene) {
+    const texturaCabeza = new THREE.TextureLoader().load('http://cors.io/?https://raw.githubusercontent.com/javiermdb99/PAGRobot/master/textura_cabeza.jpg');
+    const texturaCamiseta = new THREE.TextureLoader().load('http://virtual.lab.inf.uva.es:27092/texturas/cuero_azul.jpg');
+    
     var piernaDerGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
     var piernaIzqGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
     var cuerpoGeometry = new THREE.BoxGeometry(6, 6, 6);
@@ -114,6 +140,8 @@ function createRobot(scene) {
     var manoIzqGeometry = new THREE.SphereGeometry(0.75, 64, 32);
     var manoDerGeometry = new THREE.SphereGeometry(0.75, 64, 32);
 
+    grupoCabeza = new THREE.Group();
+    grupoCuerpo = new THREE.Group();
 
     // materiales, recuerda que tienen que ser diferentes!!
     var piernaDerMat = new THREE.MeshToonMaterial({
@@ -123,7 +151,8 @@ function createRobot(scene) {
         color: 0xFF9E9E
     });
     var cuerpoMat = new THREE.MeshBasicMaterial({
-        color: 0xFFF703
+        color: 0xFFF703,
+        map: texturaCamiseta
     });
     var cabezaMat = new THREE.MeshToonMaterial({
         color: 0xFF9E9E
@@ -156,49 +185,58 @@ function createRobot(scene) {
         color: 0xFF9E9E
     });
 
-    var piernaDer = new THREE.Mesh(piernaDerGeometry, piernaDerMat)
+    piernaDer = new THREE.Mesh(piernaDerGeometry, piernaDerMat)
     piernaDer.position.set(-1, 3.5, 0);
-    var piernaIzq = new THREE.Mesh(piernaIzqGeometry, piernaIzqMat)
+    piernaIzq = new THREE.Mesh(piernaIzqGeometry, piernaIzqMat)
     piernaIzq.position.set(1, 3.5, 0);
-    var cuerpo = new THREE.Mesh(cuerpoGeometry, cuerpoMat);
+    cuerpo = new THREE.Mesh(cuerpoGeometry, cuerpoMat);
     cuerpo.position.set(0, 10, 0);
-    var cabeza = new THREE.Mesh(cabezaGeometry, cabezaMat);
+    cabeza = new THREE.Mesh(cabezaGeometry, cabezaMat);
     cabeza.position.set(0, 16, 0);
-    var ojoIzq = new THREE.Mesh(ojoIzqGeometry, ojoIzqMat);
+    ojoIzq = new THREE.Mesh(ojoIzqGeometry, ojoIzqMat);
     ojoIzq.position.set(-.5, 17, 2);
-    var ojoDer = new THREE.Mesh(ojoDerGeometry, ojoDerMat);
+    ojoDer = new THREE.Mesh(ojoDerGeometry, ojoDerMat);
     ojoDer.position.set(.5, 17, 2);
-    var cuello = new THREE.Mesh(cuelloGeometry, cuelloMat);
+    cuello = new THREE.Mesh(cuelloGeometry, cuelloMat);
     cuello.position.set(0, 14, 0);
-    var brazoDer = new THREE.Mesh(brazoDerGeometry, brazoDerMat);
+    brazoDer = new THREE.Mesh(brazoDerGeometry, brazoDerMat);
     brazoDer.position.set(-3.5, 10, 0);
-    var brazoIzq = new THREE.Mesh(brazoIzqGeometry, brazoIzqMat);
+    brazoIzq = new THREE.Mesh(brazoIzqGeometry, brazoIzqMat);
     brazoIzq.position.set(3.5, 10, 0);
-    var antebrazoDer = new THREE.Mesh(antebrazoDerGeometry, antebrazoDerMat);
+    antebrazoDer = new THREE.Mesh(antebrazoDerGeometry, antebrazoDerMat);
     antebrazoDer.position.set(-3.5, 8, 2);
-    var antebrazoIzq = new THREE.Mesh(antebrazoIzqGeometry, antebrazoIzqMat);
+    antebrazoIzq = new THREE.Mesh(antebrazoIzqGeometry, antebrazoIzqMat);
     antebrazoIzq.position.set(3.5, 8, 2);
-    var manoIzq = new THREE.Mesh(manoIzqGeometry, manoIzqMat);
+    manoIzq = new THREE.Mesh(manoIzqGeometry, manoIzqMat);
     manoIzq.position.set(-3.5, 8, 5);
-    var manoDer = new THREE.Mesh(manoDerGeometry, manoDerMat);
+    manoDer = new THREE.Mesh(manoDerGeometry, manoDerMat);
     manoDer.position.set(3.5, 8, 5);
 
     // CUANDO HAYA LUZ
     //piernaDer.castShadow = true;
     //piernaIzq.castShadow = true;
 
-    scene.add(piernaDer);
-    scene.add(piernaIzq);
-    scene.add(cuerpo);
-    scene.add(cabeza);
-    scene.add(cuello);
-    scene.add(brazoDer);
-    scene.add(brazoIzq);
-    scene.add(antebrazoDer);
-    scene.add(antebrazoIzq);
-    scene.add(ojoIzq);
-    scene.add(ojoDer);
-    scene.add(manoIzq);
-    scene.add(manoDer);
+    grupoCuerpo.add(piernaDer);
+    grupoCuerpo.add(piernaIzq);
+    grupoCuerpo.add(cuerpo);
+    //grupoCuerpo.add(cabeza);
+    grupoCuerpo.add(cuello);
+    grupoCuerpo.add(brazoDer);
+    grupoCuerpo.add(brazoIzq);
+    grupoCuerpo.add(antebrazoDer);
+    grupoCuerpo.add(antebrazoIzq);
+    //grupoCuerpo.add(ojoIzq);
+    //grupoCuerpo.add(ojoDer);
+    grupoCuerpo.add(manoIzq);
+    grupoCuerpo.add(manoDer);
+
+    grupoCabeza.add(cabeza);
+    grupoCabeza.add(ojoIzq);
+    grupoCabeza.add(ojoDer);
+
+    scene.add(grupoCuerpo);
+    scene.add(grupoCabeza);
+
+    document.body.addEventListener('keydown', teclado, false);
 
 }
