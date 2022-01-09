@@ -22,12 +22,14 @@ function init() {
     var axes = new THREE.AxesHelper(20);
     scene.add(axes);
 
+    // crear robot
     createRobot(scene);
 
     // position and point the camera to the center of the scene
     camera.position.set(0, 40, 30);
     camera.lookAt(scene.position);
 
+    // luces ambiental, direccional y puntuales
     const light = new THREE.AmbientLight(0x000000);
     scene.add(light);
 
@@ -64,6 +66,9 @@ function createControls() {
 
 }
 
+/**
+ * Coordina los eventos de teclado
+ */
 function teclado(e) {
 
     switch (e.key) {
@@ -91,6 +96,9 @@ function teclado(e) {
 
 }
 
+/*
+Se mueve la cabeza o el robot entero
+*/
 function moverCabeza(distancia, coord) {
     if (coord == "x") {
         grupoCabeza.rotateY(distancia);
@@ -213,21 +221,15 @@ function createRobot(scene) {
     manoDer = new THREE.Mesh(manoDerGeometry, manoDerMat);
     manoDer.position.set(3.5, 8, 5);
 
-    // CUANDO HAYA LUZ
-    //piernaDer.castShadow = true;
-    //piernaIzq.castShadow = true;
 
     grupoCuerpo.add(piernaDer);
     grupoCuerpo.add(piernaIzq);
     grupoCuerpo.add(cuerpo);
-    //grupoCuerpo.add(cabeza);
     grupoCuerpo.add(cuello);
     grupoCuerpo.add(brazoDer);
     grupoCuerpo.add(brazoIzq);
     grupoCuerpo.add(antebrazoDer);
     grupoCuerpo.add(antebrazoIzq);
-    //grupoCuerpo.add(ojoIzq);
-    //grupoCuerpo.add(ojoDer);
     grupoCuerpo.add(manoIzq);
     grupoCuerpo.add(manoDer);
 
