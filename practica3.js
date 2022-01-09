@@ -123,9 +123,9 @@ function render() {
 }
 
 function createRobot(scene) {
-    const texturaCabeza = new THREE.TextureLoader().load('http://cors.io/?https://raw.githubusercontent.com/javiermdb99/PAGRobot/master/textura_cabeza.jpg');
-    const texturaCamiseta = new THREE.TextureLoader().load('http://virtual.lab.inf.uva.es:27092/texturas/cuero_azul.jpg');
-    
+    const texturaCabeza = new THREE.TextureLoader().load('http://virtual.lab.inf.uva.es:27162/texturas/textura_cabeza.jpg');
+    const texturaCamiseta = new THREE.TextureLoader().load('http://virtual.lab.inf.uva.es:27162/texturas/textura_camiseta.jpg');
+
     var piernaDerGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
     var piernaIzqGeometry = new THREE.CylinderGeometry(.65, .65, 7, 64, 64);
     var cuerpoGeometry = new THREE.BoxGeometry(6, 6, 6);
@@ -155,7 +155,8 @@ function createRobot(scene) {
         map: texturaCamiseta
     });
     var cabezaMat = new THREE.MeshToonMaterial({
-        color: 0xFF9E9E
+        color: 0xFF9E9E,
+        map: texturaCabeza
     });
     var ojoIzqMat = new THREE.MeshToonMaterial({
         color: 0x0000FF
