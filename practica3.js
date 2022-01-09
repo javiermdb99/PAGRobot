@@ -27,14 +27,27 @@ function init() {
     camera.position.set(0, 40, 30);
     camera.lookAt(scene.position);
 
-    const light = new THREE.AmbientLight( 0xffffff   );
+    const light = new THREE.AmbientLight(0x000000);
     scene.add(light);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff);
+    scene.add(directionalLight);
+
+    const firstPointLight = new THREE.PointLight(0xff0000, 1, 8);
+    firstPointLight.position.set(6, 14, 4);
+    scene.add(firstPointLight);
+
+    const secondPointLight = new THREE.PointLight(0xffff00, 1, 8);
+    secondPointLight.position.set(-6, 14, 4);
+    scene.add(secondPointLight);
 
     // add the output of the renderer to the html element
     document.getElementById("contenedor").appendChild(renderer.domElement);
 
     //controles
     createControls();
+
+    document.body.addEventListener('keydown', teclado, false);
 
     // render the scene
     renderer.render(scene, camera);
@@ -52,6 +65,26 @@ function createControls() {
 
 }
 
+function teclado(e) {
+
+    switch (e.key) {
+        case 'ArrowUp':
+            mesh.rotateX(-0.1);
+            break;
+        case 'ArrowDown':
+            mesh.rotateX(0.1);
+            break;
+        case 'ArrowLeft':
+            mesh.rotateY(-0.1);
+            break;
+        case 'ArrowRight':
+            mesh.rotateY(0.1);
+            break;
+    }
+    e.preventDefault();
+    render();
+
+}
 
 function animate() {
 
